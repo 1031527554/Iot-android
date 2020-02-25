@@ -113,22 +113,25 @@ public class SerialPort {
         driver.WriteData(data,data.length);
 
     }
+
+    public void Close(){
+        isStart=false;
+        Log.d(TAG, "Serial port Settings closed！");
+    }
     private class ReceiveThread extends Thread {
         @Override
         public void run() {
             super.run();
             //条件判断，只要条件为true，则一直执行这个线程
             while (isStart) {
-
                 byte[] Data = new byte[13];
                 int len = driver.ReadData(Data,Data.length);
                 String readData = new String(Data);
                 if (len>0){
-                    System.out.println(readData);
+                 //   System.out.println(readData);
+                    EventBus.getDefault().post(readData);   //线程通讯
                 }
 
-
-          //      EventBus.getDefault().post(readData);   线程通讯
             }
         }
     }
