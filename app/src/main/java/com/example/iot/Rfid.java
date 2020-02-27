@@ -30,8 +30,7 @@ public class Rfid extends AppCompatActivity {
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rfid);
-        final SerialPort serialPort = new SerialPort(getApplicationContext());
-        serialPort.initCH340();
+        SerialPort.initCH340(this.getApplicationContext());
         dbManager = new DBManager(this);
         dbManager.openDatabase();
 
@@ -45,7 +44,7 @@ public class Rfid extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                serialPort.WriteData("1234567891234F");
+                goHome();
             }
         });
 
@@ -58,7 +57,6 @@ public class Rfid extends AppCompatActivity {
         Log.d("Rfid","获取到了从传感器发送到Android主板的串口数据");
         //System.out.println(string);
         data.setDate(string);
-        System.out.println(string);
         SQLiteDatabase db = dbManager.getDatabase();
         Cursor cursor =  db.rawQuery("SELECT * FROM person WHERE cardID = ?",
                 new String[]{data.getCardID()});
@@ -68,15 +66,21 @@ public class Rfid extends AppCompatActivity {
             dbManager.closeDatabase();
             goHome();
         }
-
     }
 
     private void goHome() {
-        //   serial.disconnect();
+        SerialPort.Close();
         EventBus.getDefault().unregister(this);
         Intent intent =  new Intent(Rfid.this,MainActivity.class);
         intent.putExtra("key",userID);
         startActivity(intent);
-        finish();// 销毁当前活动界面
+        finish();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
 }

@@ -18,22 +18,17 @@ import cn.wch.ch34xuartdriver.CH34xUARTDriver;
 import static android.content.ContentValues.TAG;
 
 public class SerialPort {
-    private UsbManager mUsbManager;
-    private UsbDevice mUsbDevice;
-    private String ACTION_USB_PERMISSION = "com.example.iot.usb.permission";
-    private CH34xUARTDriver driver;
-    private Context context;
-    private boolean isOpenDeviceCH340 = false,isStart = false;
+    private static UsbManager mUsbManager;
+    private static UsbDevice mUsbDevice;
+    private static String ACTION_USB_PERMISSION = "com.example.iot.usb.permission";
+    private static CH34xUARTDriver driver;
+    private static boolean isOpenDeviceCH340 = false,isStart = false;
     /**
      2     * initialize ch340 parameters.
      3     *
      4     * @param context Application context.
      5     */
-    public SerialPort(Context context){
-        this.context = context;
-    }
-
-    public void initCH340() {
+    public static void initCH340(Context context) {
         if (context == null) return;
         Context appContext = context.getApplicationContext();
         mUsbManager = (UsbManager) appContext.getSystemService(Context.USB_SERVICE);
@@ -59,7 +54,7 @@ public class SerialPort {
      * @param appContext
      * @param usbManager
      */
-    private   void loadDriver(Context appContext, UsbManager usbManager) {
+    private static void loadDriver(Context appContext, UsbManager usbManager) {
         driver = new CH34xUARTDriver(usbManager, appContext, ACTION_USB_PERMISSION);
         // 判断系统是否支持USB HOST
         if (!driver.UsbFeatureSupported()) {
@@ -71,7 +66,7 @@ public class SerialPort {
     /**
       * config and open ch340.
       */
-    private  void openCH340() {
+    private static void openCH340() {
         int ret_val = driver.ResumeUsbList();
         Log.d(TAG, ret_val + "");
         // ResumeUsbList方法用于枚举CH34X设备以及打开相关设备
@@ -97,7 +92,7 @@ public class SerialPort {
      * config ch340 parameters.
      * 配置串口波特率，函数说明可参照编程手册
      */
-    private void configParameters() {
+    private static void configParameters() {
         if (driver.SetConfig(115200, (byte) 8, (byte)0,(byte)0, (byte)0)) {
             Log.d(TAG, "Successful serial port Settings！");
             isStart = true;
@@ -108,17 +103,24 @@ public class SerialPort {
         }
     }
 
-    public void WriteData(String string){
+    public static void WriteData(String string){
         byte [] data =string.getBytes();
         driver.WriteData(data,data.length);
 
     }
 
-    public void Close(){
+    public static void Close(){
         isStart=false;
         Log.d(TAG, "Serial port Settings closed！");
     }
-    private class ReceiveThread extends Thread {
+
+    public static void Open(){
+        isStart=true;
+        ReceiveThread receiveThread = new ReceiveThread();
+        receiveThread.start();
+        Log.d(TAG, "Serial port Settings closed！");
+    }
+    private static class  ReceiveThread extends Thread {
         @Override
         public void run() {
             super.run();
