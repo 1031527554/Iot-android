@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt3:
                 SerialPort.Close();
                 break;
-      /*      case R.id.imageBt1:
+            case R.id.imageBt1:
                 startActivity(new Intent(MainActivity.this,ModeActivity.class));
                 break;
             case R.id.imageBt2:
@@ -132,14 +132,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.imageBt3:
                 Intent intent =  new Intent(MainActivity.this, StateActivity.class);
-                intent.putExtra("temp",stateDate.getTemp());
-                intent.putExtra("humidity",stateDate.getHumidity());
+            //    intent.putExtra("temp",stateDate.getTemp());
+            //    intent.putExtra("humidity",stateDate.getHumidity());
                 startActivity(intent);
                 break;
             case R.id.imageBt4:
                 startActivity(new Intent(MainActivity.this, HistaryDateActivity.class));
                 break;
-            case R.id.imageBt5:
+        /*    case R.id.imageBt5:
                 startActivity(new Intent(MainActivity.this, CameraActivity.class));
                 break;
             case R.id.imageBt6:

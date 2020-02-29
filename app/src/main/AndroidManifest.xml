@@ -11,8 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Splash"
-                  android:screenOrientation="landscape">
+        <activity android:name=".SolveActivity"></activity>
+        <activity android:name=".CameraActivity" />
+        <activity android:name=".HistaryDateActivity" />
+        <activity android:name=".StateActivity" />
+        <activity android:name=".WoringActivity" />
+        <activity android:name=".ModeActivity" />
+        <activity
+            android:name=".Splash"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,16 +31,12 @@
 
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter"
-                />
+                android:resource="@xml/device_filter" />
         </activity>
-        <activity android:name=".Rfid"
-                  android:screenOrientation="landscape">
-
-        </activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity
+            android:name=".Rfid"
+            android:screenOrientation="landscape" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
