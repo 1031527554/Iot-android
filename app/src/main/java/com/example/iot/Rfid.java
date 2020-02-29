@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,7 +20,7 @@ import ch340Util.SerialPort;
 public class Rfid extends AppCompatActivity {
     private DBManager dbManager;
     private int userID;
-    private Data data = new Data();
+    private SenseData senseData = new SenseData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +55,10 @@ public class Rfid extends AppCompatActivity {
     public void onEventMainThread(String string){
         Log.d("Rfid","获取到了从传感器发送到Android主板的串口数据");
         //System.out.println(string);
-        data.setDate(string);
+        senseData.setDate(string);
         SQLiteDatabase db = dbManager.getDatabase();
         Cursor cursor =  db.rawQuery("SELECT * FROM person WHERE cardID = ?",
-                new String[]{data.getCardID()});
+                new String[]{senseData.getCardID()});
         if(cursor.moveToFirst())
         {
             userID = cursor.getInt(cursor.getColumnIndex("ID"));

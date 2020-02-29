@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvDH,tv2,tvname,tv4,tvT,tvH,time3,time2,time1,tvL;
     private DBManager dbManager;
     private Handler handler;
+    private SenseData senseData;
+    private ChineseToSpeech chineseToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -107,6 +109,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
         //注册EventBus
         EventBus.getDefault().register(this);
+        //数据库存储
+       // saveDate();
+        //语音播报初始化
+        chineseToSpeech = new ChineseToSpeech(this);
     }
 
     @Override
@@ -224,18 +230,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(String string){
         Log.d("main","获取到了从传感器发送到Android主板的串口数据");
-        Data data=new Data();
-        data.setDate(string);
-        int sign = data.getSign();
+        senseData =new SenseData();
+        senseData.setDate(string);
+        int sign = senseData.getSign();
         switch (sign){
             case 1:
-                tvT.setText(data.getTep()+"℃");
-                tvH.setText(data.getHum()+"%");
+                tvT.setText(senseData.getTep()+"℃");
+                tvH.setText(senseData.getHum()+"%");
+
+
                 break;
             case 2:
-                tvDH.setText(data.getBhum()+"%");
+                tvDH.setText(senseData.getBhum()+"%");
+                if (senseData.getBsign()==1) {
+                    chineseToSpeech.speech("湿度异常");
+                }
                 break;
         }
 
+    }
+
+
+
+    private void saveDate(){
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    SimpleDateFormat simpleDateFormat =new SimpleDateFormat("HH:mm/MM-dd");
+                    Date date = new Date(System.currentTimeMillis());
+                    dbManager.openDatabase();
+                    SQLiteDatabase db = dbManager.getDatabase();
+                    db.execSQL("INSERT INTO sense(temps,humidity,soilHumidity,time) values(?,?,?,?,?)",
+                            new String[]{String.valueOf(senseData.getTep()), String.valueOf(senseData.getHum()), String.valueOf(senseData.getBhum()),simpleDateFormat.format(date)});
+
+                }
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        chineseToSpeech.destroy();
     }
 }

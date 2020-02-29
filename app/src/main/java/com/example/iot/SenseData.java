@@ -1,7 +1,7 @@
 package com.example.iot;
 
 
-public class Data {
+public class SenseData {
     private int id;
     private String cardID;
     private String message;
@@ -32,6 +32,7 @@ public class Data {
     public int getTep(){return tep;}
     public int getBhum(){return bhum;}
     public int getSign(){return id;}
+    public int getBsign(){return sign;}
     public String getCardID(){return cardID;}
 
 
