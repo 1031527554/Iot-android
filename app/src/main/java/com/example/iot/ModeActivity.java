@@ -63,13 +63,13 @@ public class ModeActivity extends AppCompatActivity {
                 SQLiteDatabase sql = dbManager.getDatabase();
                 Cursor cursor =  sql.rawQuery(" SELECT * FROM mod WHERE modName=? ",new String[]{clickName});
                 cursor.moveToFirst();
-                temp.setText("空气温度:  "+cursor.getString(cursor.getColumnIndex("temp"))+"℃");
+                temp.setText("空气温度:  "+cursor.getString(cursor.getColumnIndex("temps"))+"℃");
                 soilTemp.setText("空气湿度:  "+cursor.getString(cursor.getColumnIndex("soilTemp"))+"℃");
                 humidity.setText("空气湿度:  "+cursor.getString(cursor.getColumnIndex("humidity"))+"%");
                 soilHumidity.setText("土壤湿度:  "+cursor.getString(cursor.getColumnIndex("soilHumidity"))+"%");
                 co2.setText("co2浓度:  "+cursor.getString(cursor.getColumnIndex("co2"))+"%");
                 light.setText("光照强度："+cursor.getString(cursor.getColumnIndex("light")));
-                DataState.setTemp(Integer.parseInt(cursor.getString(cursor.getColumnIndex("temp"))));
+                DataState.setTemp(Integer.parseInt(cursor.getString(cursor.getColumnIndex("temps"))));
                 DataState.setSoiltemp(Integer.parseInt(cursor.getString(cursor.getColumnIndex("soilTemp"))));
                 DataState.setHuidity(Integer.parseInt(cursor.getString(cursor.getColumnIndex("humidity"))));
                 DataState.setSoilhumidity(Integer.parseInt(cursor.getString(cursor.getColumnIndex("soilHumidity"))));
@@ -79,7 +79,7 @@ public class ModeActivity extends AppCompatActivity {
 
                 Cursor cursor_w =  sql.rawQuery(" SELECT * FROM woring WHERE modName=? ",new String[]{clickName});
                 cursor_w.moveToFirst();
-                WoringState.setTemp(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("temp"))));
+                WoringState.setTemp(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("temps"))));
                 WoringState.setSoiltemp(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("soilTemp"))));
                 WoringState.setHuidity(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("humidity"))));
                 WoringState.setSoilhumidity(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("soilHumidity"))));
