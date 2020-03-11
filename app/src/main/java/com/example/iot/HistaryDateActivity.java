@@ -72,7 +72,9 @@ public class HistaryDateActivity extends AppCompatActivity implements View.OnCli
         Cursor cursor =  db.rawQuery("SELECT * FROM sense ",
                 new String[]{});
         if(cursor.moveToFirst()){
-            cursor.moveToPosition(cursor.getCount()-40);
+            if(cursor.getCount()>40){
+                cursor.moveToPosition(cursor.getCount()-40);
+            }
             do {
                 int x = cursor.getInt(cursor.getColumnIndex("ID"));
                 d_temp.add(new Entry(x,cursor.getFloat(cursor.getColumnIndex("temps"))));

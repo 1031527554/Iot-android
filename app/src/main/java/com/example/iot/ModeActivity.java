@@ -29,6 +29,7 @@ public class ModeActivity extends AppCompatActivity {
         sp = findViewById(R.id.spinner);
         temp=findViewById(R.id.temp);
         soilTemp=findViewById(R.id.soilTemp);
+        humidity=findViewById(R.id.humidity);
         co2 = findViewById(R.id.co2);
         soilHumidity = findViewById(R.id.soilHumidity);
         light = findViewById(R.id.light);
@@ -55,38 +56,45 @@ public class ModeActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         sp.setAdapter(spinnerAdapter);
 
-        sp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String clickName = ((TextView)view).getText().toString();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String clickName = ((TextView) view).getText().toString();
+
                 dbManager.openDatabase();
                 SQLiteDatabase sql = dbManager.getDatabase();
-                Cursor cursor =  sql.rawQuery(" SELECT * FROM mod WHERE modName=? ",new String[]{clickName});
-                cursor.moveToFirst();
-                temp.setText("空气温度:  "+cursor.getString(cursor.getColumnIndex("temps"))+"℃");
-                soilTemp.setText("空气湿度:  "+cursor.getString(cursor.getColumnIndex("soilTemp"))+"℃");
-                humidity.setText("空气湿度:  "+cursor.getString(cursor.getColumnIndex("humidity"))+"%");
-                soilHumidity.setText("土壤湿度:  "+cursor.getString(cursor.getColumnIndex("soilHumidity"))+"%");
-                co2.setText("co2浓度:  "+cursor.getString(cursor.getColumnIndex("co2"))+"%");
-                light.setText("光照强度："+cursor.getString(cursor.getColumnIndex("light")));
-                DataState.setTemp(Integer.parseInt(cursor.getString(cursor.getColumnIndex("temps"))));
-                DataState.setSoiltemp(Integer.parseInt(cursor.getString(cursor.getColumnIndex("soilTemp"))));
-                DataState.setHuidity(Integer.parseInt(cursor.getString(cursor.getColumnIndex("humidity"))));
-                DataState.setSoilhumidity(Integer.parseInt(cursor.getString(cursor.getColumnIndex("soilHumidity"))));
-                DataState.setCo2(Integer.parseInt(cursor.getString(cursor.getColumnIndex("co2"))));
-                DataState.setLight(Integer.parseInt(cursor.getString(cursor.getColumnIndex("light"))));
-                cursor.close();
+                Cursor cursor = sql.rawQuery(" SELECT * FROM mod WHERE modName=? ", new String[]{clickName});
+                if (cursor.moveToFirst()) {
+                    temp.setText("空气温度:  " + cursor.getString(cursor.getColumnIndex("temp")) + "℃");
+                    soilTemp.setText("土壤温度:  " + cursor.getString(cursor.getColumnIndex("soilTemp")) + "℃");
+                    humidity.setText("空气湿度:  " + cursor.getString(cursor.getColumnIndex("humidity")) + "%");
+                    soilHumidity.setText("土壤湿度:  " + cursor.getString(cursor.getColumnIndex("soilHumidity")) + "%");
+                    co2.setText("co2浓度:  " + cursor.getString(cursor.getColumnIndex("co2")) + "%");
+                    light.setText("光照强度：" + cursor.getString(cursor.getColumnIndex("light")));
+                    DataState.setTemp(Integer.parseInt(cursor.getString(cursor.getColumnIndex("temp"))));
+                    DataState.setSoiltemp(Integer.parseInt(cursor.getString(cursor.getColumnIndex("soilTemp"))));
+                    DataState.setHuidity(Integer.parseInt(cursor.getString(cursor.getColumnIndex("humidity"))));
+                    DataState.setSoilhumidity(Integer.parseInt(cursor.getString(cursor.getColumnIndex("soilHumidity"))));
+                    DataState.setCo2(Integer.parseInt(cursor.getString(cursor.getColumnIndex("co2"))));
+                    DataState.setLight(Integer.parseInt(cursor.getString(cursor.getColumnIndex("light"))));
+                    cursor.close();
 
-                Cursor cursor_w =  sql.rawQuery(" SELECT * FROM woring WHERE modName=? ",new String[]{clickName});
-                cursor_w.moveToFirst();
-                WoringState.setTemp(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("temps"))));
-                WoringState.setSoiltemp(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("soilTemp"))));
-                WoringState.setHuidity(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("humidity"))));
-                WoringState.setSoilhumidity(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("soilHumidity"))));
-                WoringState.setCo2(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("co2"))));
-                WoringState.setLight(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("light"))));
-                cursor_w.close();
-                dbManager.closeDatabase();
+                    Cursor cursor_w = sql.rawQuery(" SELECT * FROM woring WHERE woringName=? ", new String[]{clickName});
+                    cursor_w.moveToFirst();
+                    WoringState.setTemp(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("temp"))));
+                    WoringState.setSoiltemp(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("soilTemp"))));
+                    WoringState.setHuidity(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("humidity"))));
+                    WoringState.setSoilhumidity(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("soilHumidity"))));
+                    WoringState.setCo2(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("co2"))));
+                    WoringState.setLight(Integer.parseInt(cursor_w.getString(cursor_w.getColumnIndex("light"))));
+                    cursor_w.close();
+                    dbManager.closeDatabase();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }

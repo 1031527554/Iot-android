@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".WoringActivity"
     android:background="#79956D"
-    android:padding="30dp"
+    android:padding="10dp"
     android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"

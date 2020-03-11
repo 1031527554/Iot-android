@@ -132,19 +132,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.imageBt3:
                 Intent intent =  new Intent(MainActivity.this, StateActivity.class);
-            //    intent.putExtra("temp",stateDate.getTemp());
-            //    intent.putExtra("humidity",stateDate.getHumidity());
                 startActivity(intent);
                 break;
             case R.id.imageBt4:
                 startActivity(new Intent(MainActivity.this, HistaryDateActivity.class));
                 break;
-        /*    case R.id.imageBt5:
+            case R.id.imageBt5:
                 startActivity(new Intent(MainActivity.this, CameraActivity.class));
                 break;
             case R.id.imageBt6:
                 startActivity(new Intent(MainActivity.this, SolveActivity.class));
-                break;    */
+                break;
             default:
                 break;
         }

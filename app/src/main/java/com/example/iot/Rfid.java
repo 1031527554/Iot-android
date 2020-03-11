@@ -19,7 +19,7 @@ import ch340Util.SerialPort;
 
 public class Rfid extends AppCompatActivity {
     private DBManager dbManager;
-    private int userID;
+    private int userID=1;
     private SenseData senseData = new SenseData();
 
     @Override
