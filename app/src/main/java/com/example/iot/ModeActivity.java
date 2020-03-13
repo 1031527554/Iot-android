@@ -55,12 +55,13 @@ public class ModeActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,data);
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         sp.setAdapter(spinnerAdapter);
+        sp.setSelection(DataState.getSelect());
 
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String clickName = ((TextView) view).getText().toString();
-
+                DataState.setSelect(i);
                 dbManager.openDatabase();
                 SQLiteDatabase sql = dbManager.getDatabase();
                 Cursor cursor = sql.rawQuery(" SELECT * FROM mod WHERE modName=? ", new String[]{clickName});

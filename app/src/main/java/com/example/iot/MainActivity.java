@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SQLiteDatabase db = dbManager.getDatabase();
                     db.execSQL("INSERT INTO sense(temps,humidity,soilHumidity,time) values(?,?,?,?,?)",
                             new String[]{String.valueOf(senseData.getTep()), String.valueOf(senseData.getHum()), String.valueOf(senseData.getBhum()),simpleDateFormat.format(date)});
-
+                    dbManager.closeDatabase();
                 }
             }
         });

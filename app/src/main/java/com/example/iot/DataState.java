@@ -1,7 +1,22 @@
 package com.example.iot;
 
 public class DataState {
-    private static int temp,soiltemp,huidity,soilhumidity,co2,light;
+    private static int temp;
+    private static int soiltemp;
+    private static int huidity;
+    private static int soilhumidity;
+    private static int co2;
+    private static int light;
+
+    public static int getSelect() {
+        return select;
+    }
+
+    public static void setSelect(int select) {
+        DataState.select = select;
+    }
+
+    private static int select;
 
     public static int getLight() {
         return light;
