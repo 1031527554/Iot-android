@@ -2,25 +2,23 @@ package com.example.iot;
 
 
 public class SenseData {
-    private int id;
-    private String cardID;
-    private String message;
-    private int hum,tep;
-    private int bhum,sign;
+    private static int sign;  //判断传感器类型
+    private static String cardID;//RFID ID
+    private static int hum,tep,bhum,bhumsign;//传感器数据
 
 
-    public void setDate(String date) {
-        String[] strings = date.split("\\|");
+    public static void setDate(String date) {
+        String[] strings = date.split("\\|"); //转义字符
         if (strings[0].equals("E"))
         {
-            id =  Integer.parseInt(strings[1]);
-            switch (id){
+            sign =  Integer.parseInt(strings[1]);
+            switch (sign){
                 case 1:
                     tep = Integer.parseInt(strings[2]);
                     hum = Integer.parseInt(strings[3]);
                 case 2:
                     bhum = Integer.parseInt(strings[2]);
-                    sign = Integer.parseInt(strings[3]);
+                    bhumsign = Integer.parseInt(strings[3]);
                 case 3:
                     cardID = strings[2];
                     break;
@@ -28,12 +26,12 @@ public class SenseData {
         }
     }
 
-    public int getHum(){return hum;}
-    public int getTep(){return tep;}
-    public int getBhum(){return bhum;}
-    public int getSign(){return id;}
-    public int getBsign(){return sign;}
-    public String getCardID(){return cardID;}
+    public static int getHum(){return hum;}
+    public static int getTep(){return tep;}
+    public static int getBhum(){return bhum;}
+    public static int getSign(){return sign;}
+    public static int getBsign(){return bhumsign;}
+    public static String getCardID(){return cardID;}
 
 
 

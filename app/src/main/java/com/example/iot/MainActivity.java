@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvDH,tv2,tvname,tv4,tvT,tvH,time3,time2,time1,tvL;
     private DBManager dbManager;
     private Handler handler;
-    private SenseData senseData;
     private ChineseToSpeech chineseToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,19 +227,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(String string){
         Log.d("main","获取到了从传感器发送到Android主板的串口数据");
-        senseData =new SenseData();
-        senseData.setDate(string);
-        int sign = senseData.getSign();
+        SenseData.setDate(string);
+        int sign = SenseData.getSign();
         switch (sign){
             case 1:
-                tvT.setText(senseData.getTep()+"℃");
-                tvH.setText(senseData.getHum()+"%");
+                tvT.setText(SenseData.getTep()+"℃");
+                tvH.setText(SenseData.getHum()+"%");
 
 
                 break;
             case 2:
-                tvDH.setText(senseData.getBhum()+"%");
-                if (senseData.getBsign()==1) {
+                tvDH.setText(SenseData.getBhum()+"%");
+                if (SenseData.getBsign()==1) {
                     chineseToSpeech.speech("湿度异常");
                 }
                 break;
@@ -265,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     dbManager.openDatabase();
                     SQLiteDatabase db = dbManager.getDatabase();
                     db.execSQL("INSERT INTO sense(temps,humidity,soilHumidity,time) values(?,?,?,?,?)",
-                            new String[]{String.valueOf(senseData.getTep()), String.valueOf(senseData.getHum()), String.valueOf(senseData.getBhum()),simpleDateFormat.format(date)});
+                            new String[]{String.valueOf(SenseData.getTep()), String.valueOf(SenseData.getHum()), String.valueOf(SenseData.getBhum()),simpleDateFormat.format(date)});
                     dbManager.closeDatabase();
                 }
             }
